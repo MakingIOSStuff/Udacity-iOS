@@ -46,7 +46,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         UdacityClient.getAllStudentLocations(completion: { (results, error) in
             if let results = results {
                 StudentArray.students = results
-                self.mapView.addAnnotation(self.getAnnotations() as! MKAnnotation)
+                self.mapView.addAnnotations(self.getAnnotations())
             } else {
                 self.showError(message: error!.localizedDescription)
             }
