@@ -127,7 +127,7 @@ class UdacityClient {
     }
     
     // MARK: GetUserData
-    class func getUserData(completion: @escaping (userResponse, Error?) -> Void) {
+    class func getUserData(completion: @escaping (userInfo, Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: EndPoints.EndPoint.getUserInfo(userId: Auth.accountKey).url) { (data, response, error) in
                 guard let data = data else {
                     DispatchQueue.main.async {
@@ -139,7 +139,7 @@ class UdacityClient {
                 let newData = data.subdata(in: range)
                 let decoder = JSONDecoder()
                 do {
-                    let requestObject = try decoder.decode(userResponse.self, from: newData)
+                    let requestObject = try decoder.decode(userInfo.self, from: newData)
                     DispatchQueue.main.async {
                         print(newData)
                         completion(requestObject, nil)
