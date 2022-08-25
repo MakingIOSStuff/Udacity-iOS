@@ -41,8 +41,7 @@ class ConfirmLocationVC: UIViewController, MKMapViewDelegate{
     
     //MARK: Finish button pressed
     @IBAction func finishButtonPressed(_ sender: Any) {
-        UdacityClient.getUserData { (userResponse, error) in
-            let userInfo = userResponse
+        UdacityClient.getUserData { (userInfo, error) in
             UdacityClient.postPin(user: PostUser(uniqueKey: UdacityClient.Auth.accountKey, userFirstName: userInfo.user.userFirstName, userLastName: userInfo.user.userLastName, mapString: self.location, mediaURL: self.userLink, latitude: self.xyCoords.latitude, longitude: self.xyCoords.longitude)) { (success, error) in
                     if success {
                         self.performSegue(withIdentifier: "backToMap", sender: nil)
