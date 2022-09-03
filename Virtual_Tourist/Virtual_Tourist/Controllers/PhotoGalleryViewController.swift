@@ -31,10 +31,10 @@ class PhotoGalleryViewController: UIViewController, MKMapViewDelegate, NSFetched
     func setupFetchedResultsController() {
         print("setup before fetch")
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
-        let predicate = NSPredicate(format: "pin == %@", pin)
+//         let predicate = NSPredicate(format: "pin == %@", pin)
         let sortDescriptor = NSSortDescriptor(key: "latitude", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        fetchRequest.predicate = predicate
+//         fetchRequest.predicate = predicate
         
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
