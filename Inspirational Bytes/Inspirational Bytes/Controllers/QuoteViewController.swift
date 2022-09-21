@@ -58,7 +58,7 @@ class QuoteViewController: UIViewController, NSFetchedResultsControllerDelegate 
     func setSavedQuote() {
         if fetchedResultsController.fetchedObjects?.count ?? 0 < 5 {
             NetworkManager.getQuotes { quoteResponse, error in
-                if error != nil {
+                if error == nil {
                     var currentQuote = quoteResponse[0]
                     self.QuoteLabel.text = currentQuote.text
                     self.AuthorLabel.text = currentQuote.author
