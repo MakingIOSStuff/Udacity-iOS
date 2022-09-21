@@ -18,7 +18,7 @@ class QOTDViewController: UIViewController, NSFetchedResultsControllerDelegate {
     
     var quotes: Quote!
     var savedQuotes: SavedQuotes!
-    var dataController: DataController!
+    var dataController: DataController = (UIApplication.shared.delegate as! AppDelegate).dataController
     var fetchedResultsController: NSFetchedResultsController<Quote>!
     
     fileprivate func setupFetchedResultsController() {
