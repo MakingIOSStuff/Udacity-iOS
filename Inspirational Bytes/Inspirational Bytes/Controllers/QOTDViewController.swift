@@ -24,7 +24,7 @@ class QOTDViewController: UIViewController, NSFetchedResultsControllerDelegate {
     fileprivate func setupFetchedResultsController() {
         
         let fetchRequest:NSFetchRequest<Quote> = Quote.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "author", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "authorName", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
