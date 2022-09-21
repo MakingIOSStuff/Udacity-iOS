@@ -40,7 +40,7 @@ class QOTDViewController: UIViewController, NSFetchedResultsControllerDelegate {
         super.viewDidLoad()
         NetworkManager.getQOTD() { response, error in
             debugPrint("\(String(describing: response)) was returned")
-            if response == response {
+            if error == nil {
                 let responseText = response?[0]
                 self.QOTDLabel.text = responseText?.text
                 self.QOTDAuthorLabel.text = responseText?.author
