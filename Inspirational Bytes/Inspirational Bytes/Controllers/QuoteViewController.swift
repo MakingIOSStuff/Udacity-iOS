@@ -18,14 +18,14 @@ class QuoteViewController: UIViewController, NSFetchedResultsControllerDelegate 
     var favQuoteText: String = ""
     var author: String = ""
     var fromFavorites: Bool = false
-    var dataController: DataController!
+    var dataController: DataController = (UIApplication.shared.delegate as! AppDelegate).dataController
     var quote: Quote!
     var fetchedResultsController: NSFetchedResultsController<Quote>!
     
     fileprivate func setupFetchedResultsController() {
         
         let fetchRequest:NSFetchRequest<Quote> = Quote.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "author", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "authorName", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
