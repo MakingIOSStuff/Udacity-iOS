@@ -21,14 +21,13 @@ class QOTDViewController: UIViewController, NSFetchedResultsControllerDelegate {
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var getQuoteButton: UIButton!
     
-    var quotes: Quote!
     var savedQuotes: SavedQuotes!
     var dataController: DataController = (UIApplication.shared.delegate as! AppDelegate).dataController
-    var fetchedResultsController: NSFetchedResultsController<Quote>!
+    var fetchedResultsController: NSFetchedResultsController<SavedQuotes>!
     
     func setupFetchedResultsController() {
         
-        let fetchRequest:NSFetchRequest<Quote> = Quote.fetchRequest()
+        let fetchRequest:NSFetchRequest<SavedQuotes> = SavedQuotes.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "authorName", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
