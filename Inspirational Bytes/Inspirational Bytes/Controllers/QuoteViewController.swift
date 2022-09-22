@@ -20,17 +20,17 @@ class QuoteViewController: UIViewController, NSFetchedResultsControllerDelegate,
     @IBOutlet weak var refreshQuoteButton: UIButton!
     
     let backgroundImageDownloadQueue = DispatchQueue(label: "com.vt.quote_download_queue")
+    var randomQuotes = [QuoteResponse]()
     var favQuoteText: String = ""
     var author: String = ""
     var fromFavorites: Bool = false
     var dataController: DataController = (UIApplication.shared.delegate as! AppDelegate).dataController
-    var quote: Quote!
     var savedQuotes: SavedQuotes!
-    var fetchedResultsController: NSFetchedResultsController<Quote>!
+    var fetchedResultsController: NSFetchedResultsController<SavedQuotes>!
     
     func setupFetchedResultsController() {
         
-        let fetchRequest:NSFetchRequest<Quote> = Quote.fetchRequest()
+        let fetchRequest:NSFetchRequest<SavedQuotes> = SavedQuotes.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "authorName", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
@@ -62,29 +62,28 @@ class QuoteViewController: UIViewController, NSFetchedResultsControllerDelegate,
     }
     
     func setSavedQuote() {
-        if fetchedResultsController.fetchedObjects!.count == 0 {
+        if randomQuotes.isEmpty == true {
             debugPrint("Did not find stored quotes. Sending for more.")
-            NetworkManager.getQuotes { [self] quoteResponse, error in
-                if error == nil {
-                    let index = (Int.random(in: 1...20))
-                    let currentQuote = quoteResponse?[index]
-                    self.QuoteLabel.text = currentQuote?.text
-                    self.AuthorLabel.text = currentQuote?.author
+            NetworkManager.getQuotes { quoteResponse, error in
+                if let quoteResponse = quoteResponse {
+                    self.randomQuotes.append(contentsOf: quoteResponse)
+                    let index = Int.random(in: 0...(quoteResponse.count - 1))
+                    let currentQuote = quoteResponse[index]
+                    self.QuoteLabel.text = currentQuote.text
+                    self.AuthorLabel.text = currentQuote.author
                     try? self.dataController.viewContext.save()
                     self.setupFetchedResultsController()
                     self.activityIndicator.stopAnimating()
-                    let quote = Quote(context: self.dataController.viewContext)
                     }
                 }
         } else {
-            debugPrint("Found stored. Get Random Quote")
-            let index = (Int.random(in: 1...(fetchedResultsController.fetchedObjects?.count)!))
-            let currentQuote = fetchedResultsController.fetchedObjects?[index]
-            QuoteLabel.text = currentQuote?.quoteText
-            AuthorLabel.text = currentQuote?.authorName
+            debugPrint("Found \(randomQuotes.count) quotes stored. Get Random Quote")
+            let index = Int.random(in: 0...(randomQuotes.count - 1))
+            let currentQuote = randomQuotes[index]
+            QuoteLabel.text = currentQuote.text
+            AuthorLabel.text = currentQuote.author
             activityIndicator.stopAnimating()
         }
-        try? dataController.viewContext.save()
     }
     
     @IBAction func NewQuoteButton(_ sender: Any) {
