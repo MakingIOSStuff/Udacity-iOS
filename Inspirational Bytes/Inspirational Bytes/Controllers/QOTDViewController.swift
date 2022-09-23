@@ -43,6 +43,11 @@ class QOTDViewController: UIViewController, NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         activityIndicator.startAnimating()
         super.viewDidLoad()
+        setQOTD()
+        activityIndicator.stopAnimating()
+    }
+    
+    func setQOTD () {
         NetworkManager.getQOTD() { quoteResponse, error in
             debugPrint("\(String(describing: quoteResponse)) was returned")
             if error == nil {
@@ -51,7 +56,6 @@ class QOTDViewController: UIViewController, NSFetchedResultsControllerDelegate {
                 self.QOTDAuthorLabel.text = responseText?.author
             }
         }
-        activityIndicator.stopAnimating()
     }
     
     func createShareQuote() -> UIImage {
