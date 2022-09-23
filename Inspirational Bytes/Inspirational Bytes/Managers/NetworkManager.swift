@@ -47,7 +47,7 @@ class NetworkManager {
               let decoder = JSONDecoder()
               do {
                   debugPrint("We are going to decode now with: \(data) that is \(String(data: data, encoding: .utf8)!)")
-                  let responseObject = try decoder.decode([QuoteResponse].self, from: data)
+                  let responseObject = try decoder.decode(responseType, from: data)
                   print("responseObject: \(responseObject)")
                   DispatchQueue.main.async {
                       completion(responseObject as? ResponseType, nil)
@@ -84,8 +84,8 @@ class NetworkManager {
         }
     }
     
-    class func getQOTD(completion: @escaping ([QuoteResponse]?, Error?) -> Void) {
-        NetworkManager.taskForGETRequest(url: Endpoints.QOTD.url, responseType: [QuoteResponse].self) { response, error in
+    class func getQOTD(completion: @escaping ([QOTDResponse]?, Error?) -> Void) {
+        NetworkManager.taskForGETRequest(url: Endpoints.QOTD.url, responseType: [QOTDResponse].self) { response, error in
             debugPrint("Decode returned to QOTD: \(String(describing: response))")
             if error == nil {
                 debugPrint("Response is: \(String(describing: response))")
