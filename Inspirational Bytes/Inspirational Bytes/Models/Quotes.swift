@@ -31,3 +31,16 @@ struct Contents: Decodable, Equatable {
     let quotes: [QuoteResponse]
 }
 
+struct QOTDResponse: Decodable, Equatable {
+    let text: String
+    let author: String
+    let html: String
+    
+    enum CodingKeys: String, CodingKey {
+        case text = "q"
+        case author = "a"
+        case html = "h"
+    }
+}
+
+
