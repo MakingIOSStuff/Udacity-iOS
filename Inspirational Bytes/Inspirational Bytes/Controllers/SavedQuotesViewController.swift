@@ -36,11 +36,12 @@ class SavedQuotesViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
-        setupFetchedResultsController()
         super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        setupFetchedResultsController()
+        debugPrint("fetch returned: \(String(describing: fetchedResultsController.fetchedObjects?.count)) objects")
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
@@ -51,8 +52,9 @@ class SavedQuotesViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "quoteCells")!
-        cell.textLabel?.text = "\(savedQuotes.quoteText ?? "")"
-        cell.detailTextLabel?.text = "\(savedQuotes.authorName ?? "")"
+        let currentQuote = fetchedResultsController.fetchedObjects?[indexPath.row]
+        cell.textLabel?.text = currentQuote?.quoteText
+        cell.detailTextLabel?.text = currentQuote?.authorName
         return cell
     }
     
