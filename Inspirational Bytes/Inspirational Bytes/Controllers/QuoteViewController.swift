@@ -5,6 +5,7 @@
 //  Created by Joel Gans on 9/11/22.
 //
 
+import Foundation
 import UIKit
 import CoreData
 
@@ -62,6 +63,7 @@ class QuoteViewController: UIViewController, NSFetchedResultsControllerDelegate,
     }
     
     func setSavedQuote() {
+        let favQuote = SavedQuotes(context: dataController.viewContext)
         if randomQuotes.isEmpty == true {
             debugPrint("Did not find stored quotes. Sending for more.")
             NetworkManager.getQuotes { quoteResponse, error in
@@ -71,8 +73,8 @@ class QuoteViewController: UIViewController, NSFetchedResultsControllerDelegate,
                     let currentQuote = quoteResponse[index]
                     self.QuoteLabel.text = currentQuote.text
                     self.AuthorLabel.text = currentQuote.author
-                    try? self.dataController.viewContext.save()
-                    self.setupFetchedResultsController()
+                    favQuote.quoteText = currentQuote.text
+                    favQuote.authorName = currentQuote.author
                     self.activityIndicator.stopAnimating()
                     }
                 }
@@ -82,6 +84,8 @@ class QuoteViewController: UIViewController, NSFetchedResultsControllerDelegate,
             let currentQuote = randomQuotes[index]
             QuoteLabel.text = currentQuote.text
             AuthorLabel.text = currentQuote.author
+            favQuote.quoteText = currentQuote.text
+            favQuote.authorName = currentQuote.author
             activityIndicator.stopAnimating()
         }
     }
@@ -113,9 +117,8 @@ class QuoteViewController: UIViewController, NSFetchedResultsControllerDelegate,
         return shareQuote
     }
     
-    @IBAction func saveToFav(_ sender: Any) {
-        savedQuotes.quoteText = QuoteLabel.text
-        savedQuotes.authorName = AuthorLabel.text
+    @IBAction func saveToFav(_ sender: UIButton) {
+        try? dataController.viewContext.save()
         debugPrint("Saving items to savedquotes")
     }
     
